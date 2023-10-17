@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie API</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./index.js"></script>
+</head>
+<body>
+    <h1>Express Movie REST API</h1>
+    <hr>
+    <ul>
+        <li>
+            <code>GET localhost:5000/api/movies</code>
+            <ul>
+                <li>Get list of all movies</li>
+            </ul>
+        </li>
+
+        <li>
+            <code>GET localhost:5000/api/movies/{id}</code>
+            <ul>
+                <li>Get one movie by its ID</li>
+            </ul>
+        </li>
+
+        <li>
+            <code>POST localhost:5000/api/movies</code>
+            <ul>
+                <li>Create a movie</li>
+                <li>
+                    Accepts this JSON request:<br/>
+                    <code>
+                        {<br/>
+                            &nbsp; &nbsp;"name": "The Godfather Part II"<br/>
+                            &nbsp; &nbsp;"releaseDate": "1974-12-20"<br/>
+                        }<br/>
+                    </code>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr/>
+
+    <h2>Movie List</h2>
+    <ul id="movie-list"></ul>
+
+    <form id="movie-form">
+        <div class="form-field">
+            <label for="name-input">Name</label>
+            <input type="text" name="name" id="name-input" placeholder="Enter movie name..."/>    
+        </div>
+        <div class="form-field">
+            <label for="releaseDate-input">Release Date</label>
+            <input type="date" name="releaseDate" id="releaseDate-input"/>    
+        </div>
+        <div class="form-field">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+</body>
+</html>
