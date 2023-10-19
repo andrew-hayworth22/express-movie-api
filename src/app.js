@@ -3,6 +3,7 @@ import express from "express"
 import { fileURLToPath } from 'url'
 import path, { dirname } from 'path'
 import cors from 'cors'
+import isEmptyOrSpaces from "./utility.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,55 +21,58 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/movies', async (req, res) => {
+    let movies;
+    let code = 200;
     try {
-        let movies = await getMovies()
-        res.json({
-            movies: movies,
-            responseCode: 200
-        })
+        movies = await getMovies()
     } catch(error) {
-        res.json({
-            movie: null,
-            responseCode: 500
-        })
+        code = 500
     }
+
+    res.json({
+        movies: movies,
+        responseCode: code
+    })
 })
 
 app.get('/api/movies/:id', async (req, res) => {
+    let movie;
+    let code = 200;
     try {
         let movie = await getMovie(req.params.id)
-        res.json({
-            movie: movie,
-            responseCode: 200
-        })
+        code = movie == null ? 404 : 200
     } catch(error) {
-        res.json({
-            movie: null,
-            responseCode: 500
-        })
+        code = 500
     }
+
+    res.json({
+        movie: movie,
+        responseCode: code
+    })
 })
 
 app.post('/api/movies', async (req, res) => {
-    if(req.body.name == undefined || req.body.releaseDate == undefined) {
+    if(isEmptyOrSpaces(req.body.name) || isEmptyOrSpaces(req.body.releaseDate)) {
         res.json({
             movieId: null,
             responseCode: 400
         })
+        return
     }
+
+    let id
+    let code = 200
     
     try {
-        let id = await createMovie(req.body)
-        res.json({
-            movieId: id,
-            responseCode: 400
-        })
+        id = await createMovie(req.body)
     } catch(error) {
-        res.json({
-            movieId: null,
-            responseCode: 500
-        })
+        code = 500
     }
+
+    res.json({
+        movieId: id,
+        responseCode: code
+    })
 })
 
 app.listen(port, () => {

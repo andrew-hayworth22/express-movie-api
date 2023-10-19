@@ -1,5 +1,9 @@
 const MOVIES_URL = new URL("http://localhost:5000/api/movies")
 
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
 function refreshMovies() {
     fetch(MOVIES_URL)
         .then(response => response.json())
@@ -18,6 +22,13 @@ function buildMovieList(movies) {
 }
 
 function createMovie(name, releaseDate) {
+    console.log(name)
+    console.log(releaseDate)
+    if(isEmptyOrSpaces(name), releaseDate == "") {
+        alert("Please fill in required fields to add a movie")
+        return
+    }
+
     fetch(MOVIES_URL, {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
@@ -30,8 +41,15 @@ function createMovie(name, releaseDate) {
             }
         })
     })
+    .then(response => response.json())
+    .then(data => {
+        if(data.responseCode != 200) {
+            alert(`Error retrieving data with status code: ${data.responseCode}`)
+            return
+        }
 
-    refreshMovies()
+        refreshMovies()
+    })
 }
 
 window.addEventListener("DOMContentLoaded", function() {
